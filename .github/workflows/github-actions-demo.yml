@@ -1,9 +1,21 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: GitHub Actions python
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀 python
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  check_python_version:
     runs-on: ubuntu-latest
     steps:
       - name: Check Python version
         run: python --version
+  pylint:
+    runs-on: ubuntu-latest
+    needs: check_python_version
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4.6.0
+        with:
+          python-version: 3.x
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run pylint
+        run: python -m pylint test_app.py
